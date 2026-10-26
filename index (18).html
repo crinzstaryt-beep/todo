@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naam Jap Karo – Simple Naam Jap Counter</title>
+<meta name="description" content="Naam Jap Karo: a free, simple online naam jap counter with 108 mala tracking. No sign-up.">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3699415316204283"
+     crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF8EE; --card:#FFFFFF; --ink:#3A2216; --muted:#7B6454;
+  --saffron:#C2500E; --saffron-dark:#8A3209; --gold:#F0A818; --soft:#FDEBD0; --line:#F1DCC2;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(180deg,#FFEFD3 0,#FFF8EE 420px) var(--bg);color:var(--ink);line-height:1.7;font-size:17px}
+h1,h2,h3,.logo{font-family:'Montserrat','Poppins',sans-serif}
+a{color:var(--saffron)}
+.wrap{width:min(720px,92%);margin:0 auto}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
+
+/* Header */
+header{position:sticky;top:0;z-index:10;padding:14px 0;background:rgba(255,248,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(168,64,15,.15)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;color:var(--saffron-dark);text-decoration:none}
+.logo span.om{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#D8570F,#A8400F);color:#FFE9BF;display:grid;place-items:center;font-size:1.35rem;box-shadow:0 0 0 3px var(--gold)}
+nav a{margin-left:16px;color:var(--ink);text-decoration:none;font-weight:500;font-size:.95rem}
+nav a:hover{color:var(--saffron)}
+
+/* Counter */
+.counter{margin:32px auto 0;background:linear-gradient(180deg,#FFFFFF,#FFFBF3);border:1px solid rgba(240,168,24,.5);border-top:6px solid var(--gold);border-radius:40px;padding:32px 22px 30px;text-align:center;box-shadow:0 20px 50px rgba(168,64,15,.16)}
+.counter h1{margin:0;font-size:clamp(1.4rem,3.2vw,1.8rem);font-weight:800;color:var(--saffron)}
+.counter .sub{margin:.2rem 0 1.2rem;color:var(--muted);font-size:.95rem}
+.fields{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:1rem}
+.fields label{display:flex;flex-direction:column;text-align:left;font-size:.85rem;font-weight:500;color:var(--muted);gap:4px}
+.fields input,.fields select{font:inherit;font-size:1rem;padding:.6rem .9rem;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+.fields input{width:min(300px,80vw)}
+.fields input:focus,.fields select:focus{outline:none;border-color:var(--saffron)}
+.mantra{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:#B45F06;min-height:1.6em;word-break:break-word;margin-bottom:.6rem}
+.circle{position:relative;display:grid;place-items:center;align-content:center;width:min(280px,72vw);aspect-ratio:1;margin:.4rem auto 1.2rem;border-radius:50%;border:8px solid #FFE9BF;background:radial-gradient(circle at 35% 30%,#E8691C,#A8400F 75%);color:#fff;cursor:pointer;font:inherit;box-shadow:0 0 0 5px var(--gold),0 10px 0 5px var(--saffron-dark),0 22px 40px rgba(168,64,15,.3);user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .08s,box-shadow .08s}
+.circle:active{transform:translateY(7px);box-shadow:0 0 0 5px var(--gold),0 3px 0 5px var(--saffron-dark),0 10px 20px rgba(168,64,15,.25)}
+.circle::before{content:"";position:absolute;inset:14px;border-radius:50%;border:2px dashed rgba(255,233,191,.55);pointer-events:none}
+.num{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(3.6rem,17vw,5.6rem);line-height:1;transition:transform .12s;word-break:break-all;padding:0 18px}
+.num.bump{transform:scale(1.1)}
+.tap{margin-top:.4rem;font-size:.9rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#FFE9BF}
+.meta{color:var(--muted);font-size:.95rem}
+.meta b{color:var(--ink)}
+.bar{height:12px;background:var(--soft);border-radius:999px;overflow:hidden;margin:-.4rem auto 1.1rem;max-width:420px}
+.bar div{height:100%;width:0;background:linear-gradient(90deg,var(--saffron),var(--gold));transition:width .2s}
+.meta{margin-bottom:1rem}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.small{font:inherit;font-size:.95rem;font-weight:600;min-height:46px;padding:0 1.4rem;border-radius:999px;border:2px solid var(--saffron);background:var(--soft);color:var(--saffron-dark);cursor:pointer}
+.small.out{background:transparent}
+.small:hover{background:var(--soft)}
+.tip{margin:1rem 0 0;color:var(--muted);font-size:.85rem}
+
+/* Content sections */
+section{padding:44px 0 0}
+h2{color:var(--saffron-dark);font-size:1.45rem;margin:0 0 .8rem}
+details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600;color:var(--saffron-dark)}
+details p{margin:.7rem 0 0;color:#5C4536}
+details h3{font-size:1rem;margin:1rem 0 0;color:var(--saffron-dark)}
+
+footer{margin-top:56px;padding:26px 0 30px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;text-align:center}
+footer a{margin:0 8px}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--saffron-dark);color:#fff;padding:.7rem 1.3rem;border-radius:999px;font-size:.95rem;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+
+@media (max-width:520px){ nav a{margin-left:10px;font-size:.88rem} .logo{font-size:1rem} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="#" class="logo"><span class="om" aria-hidden="true">ॐ</span>Naam Jap Karo</a>
+    <nav aria-label="Main">
+      <a href="#articles">Articles</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- COUNTER -->
+  <div class="counter">
+    <h1>Naam Jap Counter</h1>
+    <p class="sub">Har jap ke baad bada button dabayein.</p>
+
+    <div class="fields">
+      <label>Mantra (optional)
+        <input type="text" id="mantraIn" maxlength="60" placeholder="e.g. Radha Radha" autocomplete="off">
+      </label>
+      <label>Mala
+        <select id="target">
+          <option value="0">No mala</option>
+          <option value="108">108</option>
+          <option value="54">54</option>
+          <option value="27">27</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="mantra" id="mantra">Naam Jap</div>
+    <button class="circle" id="countBtn" type="button" aria-label="Count one jap">
+      <span class="num" id="num" aria-live="polite" aria-atomic="true">0</span>
+      <span class="tap" aria-hidden="true">Tap karein</span>
+    </button>
+    <div class="meta" id="meta">Total jap: <b id="total">0</b></div>
+    <div class="bar" id="bar" hidden><div id="fill"></div></div>
+
+    <div class="row">
+      <button class="small" id="undoBtn" type="button">↶ Undo</button>
+      <button class="small out" id="resetBtn" type="button">Reset</button>
+    </div>
+    <p class="tip">Computer par <b>Space</b> dabane se bhi jap count hota hai. Aapki ginti isi phone/browser mein save rehti hai.</p>
+  </div>
+
+  <!-- ARTICLES -->
+  <section id="articles">
+    <h2>Articles</h2>
+    <details>
+      <summary>What is naam jap and how do I begin?</summary>
+      <p>Naam jap is the practice of repeating a sacred name or mantra with attention. It can be spoken aloud, whispered or repeated silently. Many people choose the name of a deity, a guru or a mantra from their family tradition.</p>
+      <h3>A simple way to start</h3>
+      <p>Choose one name and stay with it for a while. Sit comfortably, take a few slow breaths and begin. Five minutes of steady jap is a good start, and you can slowly increase it.</p>
+      <p>If your mind wanders, simply return to the name. Coming back is part of the practice.</p>
+    </details>
+    <details>
+      <summary>What is a jaap mala, and why 108?</summary>
+      <p>A jaap mala is a loop of beads used to count repetitions. It usually has 108 beads plus one larger bead, called the meru or guru bead, that marks the start and end of a round.</p>
+      <p>The number 108 is considered sacred in several Indian traditions, and explanations for it vary. Some people use 54 or 27 repetitions, half or a quarter of a mala, when they have less time. Choose 108, 54 or 27 in the counter above and it tracks your completed malas.</p>
+    </details>
+    <details>
+      <summary>5 simple tips for a steady daily jap</summary>
+      <p><b>1. Pick a fixed time.</b> Early morning or before sleep is quieter for most people.</p>
+      <p><b>2. Keep the goal small.</b> One round you finish beats a big target you skip.</p>
+      <p><b>3. Find a calm corner.</b> Silence your phone notifications while you sit.</p>
+      <p><b>4. Keep one name for a while.</b> It helps the practice feel steady.</p>
+      <p><b>5. Be kind to yourself.</b> If you miss a day, simply begin again tomorrow.</p>
+    </details>
+    <p class="tip">Traditions differ. Follow what your family or teacher recommends.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <h2>FAQ</h2>
+    <details><summary>Is it free?</summary><p>Yes. The counter is free and needs no account.</p></details>
+    <details><summary>Will my count be saved?</summary><p>Yes, in this browser on this device. If you clear your browser data or use another phone, the count starts from 0.</p></details>
+    <details><summary>How does the mala option work?</summary><p>Choose 108, 54 or 27. The bar shows progress in the current mala, and you get a message each time a mala is complete. Your total count stays the same when you switch.</p></details>
+  </section>
+
+  <!-- PRIVACY -->
+  <section id="privacy">
+    <h2>Privacy Policy</h2>
+    <details>
+      <summary>Read our privacy policy</summary>
+      <p>Your jap count and mantra name are stored only in your own browser's local storage. This site does not have accounts and does not ask for personal information.</p>
+      <p>This site uses Google AdSense to show ads. Google and its partners use cookies to show ads based on your visits to this and other websites. You can turn off personalised ads in <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>. Learn more about <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">how Google uses data from sites that use its services</a>.</p>
+      <p>Questions? Contact us on <a href="https://www.instagram.com/shubh_x91/" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
+    </details>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="#privacy">Privacy Policy</a>
+    <a href="https://www.instagram.com/shubh_x91/" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <p>&copy; <span id="year">2026</span> Naam Jap Karo</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  function load(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var toastTimer;
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+
+  var count = load('njk_count', load('njk_counter', 0)); // keeps counts from the old version if (typeof count !== 'number' || count < 0) count = 0;
+  var target = load('njk_target', 0); if ([0, 108, 54, 27].indexOf(target) < 0) target = 0;
+  var mantraIn = $('mantraIn'), sel = $('target');
+  mantraIn.value = load('njk_mantra', '');
+  sel.value = String(target);
+
+  function render() {
+    $('mantra').textContent = mantraIn.value.trim() || 'Naam Jap';
+    if (target) {
+      var cur = count % target, done = Math.floor(count / target);
+      $('num').textContent = cur;
+      $('meta').innerHTML = 'Mala <b>' + (done + 1) + '</b> · ' + cur + ' of ' + target + ' · Malas done: <b>' + done + '</b> · Total: <b>' + count.toLocaleString() + '</b>';
+      $('bar').hidden = false; $('fill').style.width = (cur / target * 100) + '%';
+    } else {
+      $('num').textContent = count.toLocaleString();
+      $('meta').innerHTML = 'Total jap: <b>' + count.toLocaleString() + '</b>';
+      $('bar').hidden = true;
+    }
+  }
+  function bump() { var n = $('num'); n.classList.remove('bump'); void n.offsetWidth; n.classList.add('bump'); setTimeout(function () { n.classList.remove('bump'); }, 130); }
+
+  function add() {
+    count++; save('njk_count', count); render(); bump();
+    if (navigator.vibrate) navigator.vibrate(15);
+    if (target && count % target === 0) toast('🙏 Mala ' + (count / target) + ' complete!');
+  }
+  function undo() {
+    if (!count) { toast('Nothing to undo.'); return; }
+    count--; save('njk_count', count); render();
+  }
+  function reset() {
+    if (!count) { toast('Count is already 0.'); return; }
+    if (confirm('Reset your count to 0?')) { count = 0; save('njk_count', 0); render(); toast('Count reset'); }
+  }
+
+  // Drop focus after button clicks so Space never repeats Undo/Reset
+  function btn(id, fn) { $(id).addEventListener('click', function () { fn(); this.blur(); }); }
+  btn('countBtn', add); btn('undoBtn', undo); btn('resetBtn', reset);
+
+  mantraIn.addEventListener('input', function () { save('njk_mantra', mantraIn.value); render(); });
+  sel.addEventListener('change', function () { target = parseInt(sel.value, 10); save('njk_target', target); render(); sel.blur(); });
+
+  // Space or J counts, U undoes, anywhere except while typing
+  document.addEventListener('keydown', function (e) {
+    var tag = e.target.tagName;
+    if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || tag === 'SUMMARY' || tag === 'A' || tag === 'BUTTON') return;
+    var k = e.key.toLowerCase();
+    if (k === ' ' || k === 'j') { e.preventDefault(); add(); }
+    else if (k === 'u') { e.preventDefault(); undo(); }
+  });
+
+  $('year').textContent = new Date().getFullYear();
+  render();
+})();
+</script>
+</body>
+</html>
